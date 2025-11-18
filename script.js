@@ -48,10 +48,12 @@ setInterval(() => {
 
 // CATEGORY FILTER SETUP
 function setupCategoryFilters() {
+    console.log('Setting up category filters...');
     document.querySelectorAll('.category-link').forEach(link => {
         link.addEventListener('click', (e) => {
             e.preventDefault();
             const category = link.getAttribute('data-category');
+            console.log('Category clicked:', category);
             
             document.querySelectorAll('.category-link').forEach(l => l.classList.remove('active'));
             link.classList.add('active');
@@ -149,6 +151,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (typeof products !== 'undefined' && products.length > 0) {
             console.log('Products found:', products.length);
             displayProducts('all');
+            setupCategoryFilters();
         } else {
             console.error('No products loaded');
         }
@@ -156,53 +159,134 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function displayProducts(category) {
-    console.log('Displaying products...');
+    console.log('Displaying products for category:', category);
     const productsGrid = document.getElementById('productsGrid');
     if (!productsGrid) {
         console.error('Products grid not found!');
         return;
     }
 
-    productsGrid.innerHTML = '';
+    // Add loading state to grid
+    productsGrid.classList.add('loading');
     
-    const productsToShow = category === 'all' ? products : products.slice(0, 6);
+    // Fade out existing products
+    const existingCards = productsGrid.querySelectorAll('.product-card');
+    existingCards.forEach(card => card.classList.add('fade-out'));
     
-    productsToShow.forEach((product, index) => {
-        const productCard = document.createElement('div');
-        productCard.className = 'product-card';
+    // Show loading skeleton briefly
+    setTimeout(() => {
+        productsGrid.innerHTML = '';
+        showLoadingSkeleton(productsGrid);
         
-        productCard.innerHTML = `
-            <div class="product-image">
-                <img src="${product.image}" alt="${product.name}" onerror="this.src='https://via.placeholder.com/250x250?text=${encodeURIComponent(product.name)}'">
-            </div>
-            <div class="product-info">
-                <p class="product-id">ID: ${product.id}</p>
-                <h4 class="product-name">${product.name}</h4>
-                <p class="product-price">${product.price}</p>
-                <button class="btn-add view-details-btn" data-product-id="${product.id}">View Details</button>
-            </div>
-            <div class="product-overlay">
-                <div class="product-actions">
-                    <button class="product-action-btn view-details-btn" data-product-id="${product.id}" title="View Details">
-                        <i class="fas fa-eye"></i>
-                    </button>
-                    <button class="product-action-btn add-to-cart-btn" data-product-id="${product.id}" title="Add to Cart">
-                        <i class="fas fa-shopping-cart"></i>
-                    </button>
-                    <button class="product-action-btn wishlist-btn" data-product-id="${product.id}" title="Add to Wishlist">
-                        <i class="fas fa-heart"></i>
-                    </button>
-                </div>
+        // Simulate loading delay for better UX
+        setTimeout(() => {
+            productsGrid.classList.remove('loading');
+            loadProducts(category, productsGrid);
+        }, 400);
+    }, 300);
+}
+
+function showLoadingSkeleton(container) {
+    const skeletonCount = 6; // Number of skeleton cards to show
+    let skeletonHTML = '';
+    
+    for (let i = 0; i < skeletonCount; i++) {
+        skeletonHTML += `
+            <div class="skeleton-card">
+                <div class="skeleton-image"></div>
+                <div class="skeleton-text title"></div>
+                <div class="skeleton-text"></div>
+                <div class="skeleton-text price"></div>
             </div>
         `;
-        
-        productsGrid.appendChild(productCard);
+    }
+    
+    container.innerHTML = skeletonHTML;
+}
+
+function loadProducts(category, container) {
+    const productsToShow = category === 'all' ? products : products.filter(product => product.category === category);
+    console.log('Products to show:', productsToShow.length, 'out of', products.length);
+    
+    // Log first few products and their categories for debugging
+    if (productsToShow.length > 0) {
+        console.log('Sample products in category:', productsToShow.slice(0, 3).map(p => ({name: p.name, category: p.category})));
+    } else {
+        console.log('All available categories:', [...new Set(products.map(p => p.category))]);
+    }
+    
+    // Clear skeleton
+    container.innerHTML = '';
+    
+    // Show no products message if needed
+    if (productsToShow.length === 0) {
+        container.innerHTML = `
+            <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px; color: #666;">
+                <i class="fas fa-search" style="font-size: 48px; margin-bottom: 20px; opacity: 0.3;"></i>
+                <h3>No products found in this category</h3>
+                <p>Try selecting a different category or check back later for new products.</p>
+            </div>
+        `;
+        return;
+    }
+    
+    // Create and append products with staggered animation
+    productsToShow.forEach((product, index) => {
+        setTimeout(() => {
+            const productCard = createProductCard(product);
+            container.appendChild(productCard);
+            
+            // Add entrance animation
+            setTimeout(() => {
+                productCard.style.opacity = '1';
+                productCard.style.transform = 'translateY(0) scale(1)';
+            }, 50);
+        }, index * 100); // Staggered delay
     });
     
     console.log('Displayed', productsToShow.length, 'products');
     
     // Add event listeners to view details buttons
-    addViewDetailsListeners();
+    setTimeout(() => {
+        addViewDetailsListeners();
+    }, productsToShow.length * 100 + 200);
+}
+
+function createProductCard(product) {
+    const productCard = document.createElement('div');
+    productCard.className = 'product-card';
+    productCard.style.opacity = '0';
+    productCard.style.transform = 'translateY(30px) scale(0.95)';
+    productCard.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    
+    productCard.innerHTML = `
+        <div class="product-image">
+            <img src="${product.image}" alt="${product.name}" onerror="this.src='https://via.placeholder.com/250x250?text=${encodeURIComponent(product.name)}'">
+            ${product.badge ? `<span class="product-badge ${product.badge.toLowerCase()}">${product.badge}</span>` : ''}
+        </div>
+        <div class="product-info">
+            <p class="product-id">ID: ${product.id}</p>
+            <h4 class="product-name">${product.name}</h4>
+            <p class="product-price">${product.price}</p>
+            <button class="btn-add view-details-btn" data-product-id="${product.id}">View Details</button>
+        </div>
+        <div class="product-overlay">
+            <div class="product-actions">
+                <button class="product-action-btn view-details-btn" data-product-id="${product.id}" title="View Details">
+                    <i class="fas fa-eye"></i>
+                </button>
+                <button class="product-action-btn add-to-cart-btn" data-product-id="${product.id}" title="Add to Cart">
+                    <i class="fas fa-shopping-cart"></i>
+                </button>
+                <button class="product-action-btn wishlist-btn" data-product-id="${product.id}" title="Add to Wishlist">
+                    <i class="fas fa-heart"></i>
+                </button>
+            </div>
+            <div class="quick-view-text">Quick View</div>
+        </div>
+    `;
+    
+    return productCard;
 }
 
 // Show product details popup
