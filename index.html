@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heng Fitness Shop - Premium Fitness Equipment</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- FIXED HEADER -->
+    <header class="header" id="home">
+        <div class="header-content">
+            <div class="header-item">
+                <i class="fas fa-phone"></i>
+                <span>(+855) 86 322 292 / 92 322 292 / 12 953 267</span>
+            </div>
+            <div class="header-item">
+                <i class="fas fa-dumbbell"></i>
+                <span>Heng Fitness Cambodia</span>
+            </div>
+            <div class="header-item">
+                <i class="fas fa-envelope"></i>
+                <span>OniFitnessCambodia@gmail.com</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-dumbbell"></i> Heng Fitness
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#" onclick="scrollToTop()">Home</a></li>
+                <li><a href="#contact">Contact Us</a></li>
+                
+            </ul>
+        </div>
+    </nav>
+
+    <!-- HERO CAROUSEL -->
+    <!-- Recommended image dimensions: 1200px width x 400px height for perfect fit -->
+    <!-- Images will be automatically resized to fit the carousel container -->
+    <section class="hero">
+        <div class="carousel">
+            <div class="carousel-item active">
+                <!-- Recommended: 1200x400px - Current: Images/Banner 1.jpg -->
+                <img src="Images/Banner 1.jpg" alt="Fitness Equipment">
+                <div class="carousel-overlay">
+                    <h2>Premium Fitness Equipment</h2>
+                    <p>Transform Your Body, Transform Your Life</p>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <!-- Recommended: 1200x400px - Current: Images/Banner 2.jpg -->
+                <img src="Images/Banner 2.jpg" alt="Best Prices">
+                <div class="carousel-overlay">
+                    <h2>Best Prices Guaranteed</h2>
+                    <p>Quality Equipment at Affordable Rates</p>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <!-- Recommended: 1200x400px - Current: Placeholder image -->
+                <img src="https://via.placeholder.com/1200x400?text=Expert+Support" alt="Expert Support">
+                <div class="carousel-overlay">
+                    <h2>Expert Support</h2>
+                    <p>Get Professional Guidance Every Step</p>
+                </div>
+            </div>
+            <button class="carousel-btn prev" onclick="slideCarousel(-1)">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <button class="carousel-btn next" onclick="slideCarousel(1)">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+            <div class="carousel-dots">
+                <span class="dot active" onclick="currentSlide(0)"></span>
+                <span class="dot" onclick="currentSlide(1)"></span>
+                <span class="dot" onclick="currentSlide(2)"></span>
+            </div>
+        </div>
+    </section>
+
+    <!-- MAIN CONTENT -->
+    <main class="container">
+        <div class="content-wrapper">
+            <!-- SIDEBAR CATEGORIES -->
+            <aside class="sidebar">
+                <h3>Categories</h3>
+                <ul class="category-list">
+                    <li><a href="#" class="category-link active" data-category="all">All Products</a></li>
+                    <li><a href="#" class="category-link" data-category="Hot Sells">Hot Sells</a></li>
+                    <li><a href="#" class="category-link" data-category="New Products">New Products</a></li>
+                    <li><a href="#" class="category-link" data-category="Yoga">Yoga</a></li>
+                    <li><a href="#" class="category-link" data-category="Boxing">Boxing</a></li>
+                    <li><a href="#" class="category-link" data-category="Treadmills">Treadmills</a></li>
+                    <li><a href="#" class="category-link" data-category="Bike">Bike</a></li>
+                    <li><a href="#" class="category-link" data-category="Trampolines">Trampolines</a></li>
+                    <li><a href="#" class="category-link" data-category="Dumbbells">Dumbbells</a></li>
+                </ul>
+            </aside>
+
+            <!-- PRODUCTS GRID -->
+            <section class="products">
+                <h2>Featured Products</h2>
+                <div class="products-grid" id="productsGrid">
+                    <!-- Products will be dynamically loaded here -->
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- MODAL - PRODUCT DETAILS -->
+    <div class="modal" id="productModal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeModal()">&times;</span>
+            <div class="modal-body">
+                <div class="modal-image">
+                    <img id="modalProductImage" src="" alt="Product">
+                </div>
+                <div class="modal-details">
+                    <p class="modal-product-id" id="modalProductId"></p>
+                    <h2 id="modalProductName"></h2>
+                    <p class="modal-category" id="modalProductCategory"></p>
+                    <p class="modal-price" id="modalProductPrice"></p>
+                    <p class="modal-description" id="modalProductDescription"></p>
+                    <div class="modal-actions">
+                        
+                        <button class="btn-secondary" onclick="closeModal()">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CART SECTION -->
+<section id="cart" class="cart-section">
+    <div class="cart-container">
+        <div class="cart-header">
+            <h3>Shopping Cart</h3>
+            <button class="cart-close" onclick="closeCart()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="cart-body">
+            <div id="cartItems" class="cart-items">
+                <!-- Cart items will be dynamically loaded here -->
+            </div>
+            <div id="emptyCart" class="empty-cart" style="display: none;">
+                <i class="fas fa-shopping-cart"></i>
+                <p>Your cart is empty</p>
+                <button class="btn-primary" onclick="closeCart()">Continue Shopping</button>
+            </div>
+        </div>
+        <div class="cart-footer">
+            <div class="cart-summary">
+                <div class="cart-total">
+                    <span>Total:</span>
+                    <span id="cartTotal"><!-- CHECKOUT MODAL -->.00</span>
+                </div>
+            </div>
+            <button class="btn-primary checkout-btn" onclick="proceedToCheckout()">Proceed to Checkout</button>
+        </div>
+    </div>
+</section>
+<!-- CHECKOUT MODAL -->
+    <div class="modal" id="checkoutModal">
+        <div class="modal-content checkout-modal">
+            <span class="modal-close" onclick="closeCheckoutModal()">&times;</span>
+            <div class="checkout-header">
+                <h2>Checkout & Invoice</h2>
+            </div>
+            
+            <div class="checkout-body">
+                <div class="customer-info">
+                    <h3>Customer Information</h3>
+                    <div class="form-row">
+                        <input type="text" id="customerName" placeholder="Full Name" required>
+                        <input type="tel" id="customerPhone" placeholder="Phone Number" required>
+                    </div>
+                    <div class="form-row">
+                        <input type="email" id="customerEmail" placeholder="Email Address" required>
+                        <input type="text" id="customerAddress" placeholder="Delivery Address" required>
+                    </div>
+                </div>
+                
+                <div class="invoice-preview">
+                    <h3>Invoice Preview</h3>
+                    <div class="invoice-header">
+                        <h4>INVOICE</h4>
+                        <div class="invoice-details">
+                            <p><strong>Invoice #:</strong> <span id="invoiceNumber">INV-2024-001</span></p>
+                            <p><strong>Date:</strong> <span id="invoiceDate"></span></p>
+                            <p><strong>Customer:</strong> <span id="invoiceCustomer">-</span></p>
+                        </div>
+                    </div>
+                    
+                    <div class="invoice-items" id="invoiceItems">
+                        <!-- Invoice items will be populated here -->
+                    </div>
+                    
+                    <div class="invoice-totals">
+                        <div class="total-row">
+                            <span>Subtotal:</span>
+                            <span id="invoiceSubtotal">$0.00</span>
+                        </div>
+                        <div class="total-row">
+                            <span>Delivery:</span>
+                            <span id="invoiceDelivery">$0.00</span>
+                        </div>
+                        <div class="total-row">
+                            <span>Discount:</span>
+                            <span id="invoiceDiscount">$0.00</span>
+                        </div>
+                        <div class="total-row grand-total">
+                            <span>Total (USD):</span>
+                            <span id="invoiceGrandTotal">$0.00</span>
+                        </div>
+                        <div class="total-row grand-totalKHR">
+                            <span>Total (KHR):</span>
+                            <span id="invoiceGrandTotalKHR">៛0</span>
+                        </div>
+                    </div>
+                    
+                    <div class="payment-method">
+                        <h4>Payment Method</h4>
+                        <div class="payment-options">
+                            <label><input type="radio" name="payment" value="cash" checked> Cash on Delivery</label>
+                            <label><input type="radio" name="payment" value="bank"> Bank Transfer</label>
+                            <label><input type="radio" name="payment" value="card"> Credit Card</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="checkout-actions">
+                <button class="btn-secondary" onclick="closeCheckoutModal()">Cancel</button>
+                <button class="btn-primary" onclick="printInvoice()">
+                    <i class="fas fa-print"></i> Print Invoice
+                </button>
+                <button class="btn-success" onclick="confirmOrder()">
+                    <i class="fas fa-check"></i> Confirm Order
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer" id="contact">
+        <div class="footer-wrapper">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4><i class="fas fa-info-circle"></i> About Us</h4>
+                    <p>Your trusted partner for premium fitness equipment and healthy lifestyle solutions since 2020.</p>
+                </div>
+                <div class="footer-section">
+                    <h4><i class="fas fa-link"></i> Quick Links</h4>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                        <li><a href="#products">Products</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4><i class="fas fa-phone-alt"></i> Contact Info</h4>
+                    <p><i class="fas fa-phone"></i> (+855) 86 322 292</p>
+                    <p><i class="fas fa-phone"></i> (+855) 92 322 292</p>
+                    <p><i class="fas fa-envelope"></i> OniFitnessCambodia@gmail.com</p>
+                </div>
+                <div class="footer-section">
+                    <h4><i class="fas fa-share-alt"></i> Follow Us</h4>
+                    <div class="social-links">
+                        <a href="https://facebook.com" class="social-icon facebook" title="Facebook" target="_blank">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="https://instagram.com" class="social-icon instagram" title="Instagram" target="_blank">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="https://t.me" class="social-icon telegram" title="Telegram" target="_blank">
+                            <i class="fab fa-telegram"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Heng Fitness Cambodia. All Rights Reserved. | Design with <i class="fas fa-heart"></i> for fitness enthusiasts</p>
+        </div>
+    </footer>
+
+    <!-- SCROLL TO TOP BUTTON -->
+    <button id="scrollToTop" class="scroll-to-top" aria-label="Scroll to top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script src="products.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
