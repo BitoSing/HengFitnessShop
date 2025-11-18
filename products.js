@@ -360,5 +360,5 @@ const products = generateAllProducts();
 // Make products globally accessible
 window.products = products;
 
-console.log(`✓ Products initialized: ${products.length} items loaded`);
+console.log(`Products initialized: ${products.length} items loaded`);
 console.log('Sample products:', products.slice(0, 5));
