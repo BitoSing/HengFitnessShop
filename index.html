@@ -8,35 +8,118 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <!-- FIXED HEADER -->
-    <header class="header" id="home">
-        <div class="header-content">
-            <div class="header-item">
-                <i class="fas fa-phone"></i>
-                <span>(+855) 86 322 292 / 92 322 292 / 12 953 267</span>
-            </div>
-            <div class="header-item">
-                <i class="fas fa-dumbbell"></i>
-                <span>Heng Fitness Cambodia</span>
-            </div>
-            <div class="header-item">
-                <i class="fas fa-envelope"></i>
-                <span>OniFitnessCambodia@gmail.com</span>
-            </div>
-        </div>
-    </header>
-
-    <!-- NAVBAR -->
+    <!-- ENHANCED NAVBAR -->
     <nav class="navbar">
         <div class="nav-container">
+            <!-- Logo -->
             <div class="logo">
-                <i class="fas fa-dumbbell"></i> Heng Fitness
+                <i class="fas fa-dumbbell"></i>
+                <span>Heng Fitness</span>
             </div>
+
+            <!-- Desktop Navigation Menu -->
             <ul class="nav-menu">
-                <li><a href="#" onclick="scrollToTop()">Home</a></li>
-                <li><a href="#contact">Contact Us</a></li>
-                
+                <li><a href="#" onclick="scrollToTop()" class="nav-link active">Home</a></li>
+                <li class="dropdown">
+                    <a href="#" class="nav-link dropdown-toggle">
+                        Products <i class="fas fa-chevron-down"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#" onclick="filterByCategory('all')">All Products</a></li>
+                        <li><a href="#" onclick="filterByCategory('Hot Sells')">Hot Deals</a></li>
+                        <li><a href="#" onclick="filterByCategory('New Products')">New Arrivals</a></li>
+                        <li class="dropdown-submenu">
+                            <a href="#" class="dropdown-toggle">
+                                Equipment <i class="fas fa-chevron-right"></i>
+                            </a>
+                            <ul class="dropdown-submenu-items">
+                                <li><a href="#" onclick="filterByCategory('Treadmills')">Treadmills</a></li>
+                                <li><a href="#" onclick="filterByCategory('Bike')">Exercise Bikes</a></li>
+                                <li><a href="#" onclick="filterByCategory('Dumbbells')">Weights</a></li>
+                                <li><a href="#" onclick="filterByCategory('Boxing')">Boxing Gear</a></li>
+                                <li><a href="#" onclick="filterByCategory('Yoga')">Yoga Equipment</a></li>
+                                <li><a href="#" onclick="filterByCategory('Trampolines')">Trampolines</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li><a href="#about" class="nav-link">About</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
             </ul>
+
+            <!-- Search Bar -->
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="Search products..." id="searchInput">
+                <button class="search-btn" onclick="performSearch()">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+
+            <!-- Action Icons -->
+            <div class="nav-actions">
+                <button class="action-btn" title="Favorites" onclick="toggleWishlist()">
+                    <i class="fas fa-heart"></i>
+                    <span class="badge wishlist-badge">0</span>
+                </button>
+                <button class="action-btn" title="Shopping Cart" onclick="openCart()">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="badge" id="cartCount">0</span>
+                </button>
+            </div>
+
+            <!-- Mobile Menu Toggle -->
+            <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div class="mobile-menu" id="mobileMenu">
+            <div class="mobile-menu-header">
+                <button class="mobile-menu-close" id="mobileMenuClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="mobile-menu-content">
+                <!-- Mobile Search -->
+                <div class="mobile-search">
+                    <input type="text" id="mobileSearchInput" placeholder="Search products..." class="mobile-search-input">
+                    <button class="mobile-search-btn" onclick="performSearch()">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+                
+                <!-- Mobile Navigation -->
+                <ul class="mobile-nav-list">
+                    <li><a href="#" class="mobile-nav-link" onclick="filterByCategory('all')">Home</a></li>
+                    <li class="mobile-dropdown">
+                        <a href="#" class="mobile-nav-link mobile-dropdown-toggle">
+                            Products <i class="fas fa-chevron-down"></i>
+                        </a>
+                        <ul class="mobile-dropdown-menu">
+                            <li><a href="#" class="mobile-nav-link" onclick="filterByCategory('Hot Sells')">Hot Sells</a></li>
+                            <li><a href="#" class="mobile-nav-link" onclick="filterByCategory('New Products')">New Products</a></li>
+                            <li><a href="#" class="mobile-nav-link" onclick="filterByCategory('Treadmills')">Treadmills</a></li>
+                            <li><a href="#" class="mobile-nav-link" onclick="filterByCategory('Bike')">Bike</a></li>
+                            <li><a href="#" class="mobile-nav-link" onclick="filterByCategory('Dumbbells')">Dumbbells</a></li>
+                            <li><a href="#" class="mobile-nav-link" onclick="filterByCategory('Boxing')">Boxing</a></li>
+                            <li><a href="#" class="mobile-nav-link" onclick="filterByCategory('Yoga')">Yoga</a></li>
+                            <li><a href="#" class="mobile-nav-link" onclick="filterByCategory('Trampolines')">Trampolines</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#contact" class="mobile-nav-link">Contact</a></li>
+                </ul>
+                
+                <!-- Mobile Actions -->
+                <div class="mobile-actions">
+                    <button class="mobile-action-btn" onclick="openCart()">
+                        <i class="fas fa-shopping-cart"></i>
+                        Cart <span class="badge" id="mobileCartCount">0</span>
+                    </button>
+                </div>
+            </div>
         </div>
     </nav>
 
@@ -108,6 +191,10 @@
                 <div class="products-grid" id="productsGrid">
                     <!-- Products will be dynamically loaded here -->
                 </div>
+                <!-- PAGINATION CONTROLS -->
+                <div class="pagination-container" id="paginationContainer">
+                    <!-- Pagination buttons will be generated here -->
+                </div>
             </section>
         </div>
     </main>
@@ -174,17 +261,19 @@
             </div>
             
             <div class="checkout-body">
-                <div class="customer-info">
-                    <h3>Customer Information</h3>
-                    <div class="form-row">
-                        <input type="text" id="customerName" placeholder="Full Name" required>
-                        <input type="tel" id="customerPhone" placeholder="Phone Number" required>
+                <form id="checkoutForm">
+                    <div class="customer-info">
+                        <h3>Customer Information</h3>
+                        <div class="form-row">
+                            <input type="text" id="customerName" placeholder="Full Name" required>
+                            <input type="tel" id="customerPhone" placeholder="Phone Number" required>
+                        </div>
+                        <div class="form-row">
+                            <input type="email" id="customerEmail" placeholder="Email Address" required>
+                            <input type="text" id="customerAddress" placeholder="Delivery Address" required>
+                        </div>
                     </div>
-                    <div class="form-row">
-                        <input type="email" id="customerEmail" placeholder="Email Address" required>
-                        <input type="text" id="customerAddress" placeholder="Delivery Address" required>
-                    </div>
-                </div>
+                </form>
                 
                 <div class="invoice-preview">
                     <h3>Invoice Preview</h3>
@@ -199,6 +288,17 @@
                     
                     <div class="invoice-items" id="invoiceItems">
                         <!-- Invoice items will be populated here -->
+                    </div>
+                    
+                    <div class="invoice-controls">
+                        <div class="control-row">
+                            <label>Delivery Fee ($):</label>
+                            <input type="number" id="deliveryFeeInput" value="0" min="0" step="0.01">
+                        </div>
+                        <div class="control-row">
+                            <label>Discount ($):</label>
+                            <input type="number" id="discountInput" value="0" min="0" step="0.01">
+                        </div>
                     </div>
                     
                     <div class="invoice-totals">
@@ -220,7 +320,7 @@
                         </div>
                         <div class="total-row grand-totalKHR">
                             <span>Total (KHR):</span>
-                            <span id="invoiceGrandTotalKHR">៛0</span>
+                            <span id="invoiceGrandTotalKHR">KHR 0.00</span>
                         </div>
                     </div>
                     
@@ -243,6 +343,84 @@
                 <button class="btn-success" onclick="confirmOrder()">
                     <i class="fas fa-check"></i> Confirm Order
                 </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CART SECTION -->
+    <div class="cart-modal" id="cartModal">
+        <div class="cart-overlay" onclick="closeCart()"></div>
+        <div class="cart-container">
+            <div class="cart-header">
+                <h2><i class="fas fa-shopping-cart"></i> Shopping Cart</h2>
+                <button class="cart-close" onclick="closeCart()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="cart-content">
+                <div class="cart-items" id="cartItemsContainer">
+                    <!-- Cart items will be dynamically added here -->
+                </div>
+                
+                <div class="cart-summary">
+                    <div class="summary-section">
+                        <h3>Order Summary</h3>
+                        <div class="summary-row">
+                            <span>Subtotal:</span>
+                            <span id="subtotal">$0.00</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Tax (10%):</span>
+                            <span id="tax">$0.00</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Shipping:</span>
+                            <span id="shipping">$0.00</span>
+                        </div>
+                        <div class="summary-row total">
+                            <span>Total:</span>
+                            <span id="total">$0.00</span>
+                        </div>
+                    </div>
+                    
+                    <div class="cart-actions">
+                        <button class="btn-secondary" onclick="clearCart()">
+                            <i class="fas fa-trash"></i> Clear Cart
+                        </button>
+                        <button class="btn-info" onclick="printCart()">
+                            <i class="fas fa-print"></i> Print
+                        </button>
+                        <button class="btn-primary" onclick="proceedToCheckout()">
+                            <i class="fas fa-credit-card"></i> Checkout
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- INVOICE MODAL -->
+    <div class="invoice-modal" id="invoiceModal">
+        <div class="invoice-overlay" onclick="closeInvoice()"></div>
+        <div class="invoice-container">
+            <div class="invoice-header">
+                <h2><i class="fas fa-receipt"></i> Invoice</h2>
+                <div class="invoice-actions">
+                    <button class="btn-secondary" onclick="printInvoice()">
+                        <i class="fas fa-print"></i> Print
+                    </button>
+                    <button class="invoice-close" onclick="closeInvoice()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="invoice-content" id="invoiceContent">
+                <div class="order-items" id="orderItems">
+                    <!-- Order items will be displayed here -->
+                </div>
+                <!-- Invoice details will be generated here -->
             </div>
         </div>
     </div>
@@ -300,3 +478,5 @@
     <script src="script.js"></script>
 </body>
 </html>
+
+
