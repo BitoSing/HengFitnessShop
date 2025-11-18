@@ -65,12 +65,79 @@ function setupCategoryFilters() {
 // Add event listeners to view details buttons
 function addViewDetailsListeners() {
     const viewDetailsBtns = document.querySelectorAll('.view-details-btn');
+    const addToCartBtns = document.querySelectorAll('.add-to-cart-btn');
+    const wishlistBtns = document.querySelectorAll('.wishlist-btn');
+    
     viewDetailsBtns.forEach(btn => {
         btn.addEventListener('click', (e) => {
             const productId = btn.getAttribute('data-product-id');
             showProductDetails(productId);
         });
     });
+    
+    addToCartBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const productId = btn.getAttribute('data-product-id');
+            addToCart(productId);
+        });
+    });
+    
+    wishlistBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const productId = btn.getAttribute('data-product-id');
+            addToWishlist(productId);
+        });
+    });
+}
+
+// Add to cart function
+function addToCart(productId) {
+    const product = products.find(p => p.id === productId);
+    if (product) {
+        console.log('Added to cart:', product.name);
+        // You can implement cart functionality here
+        // For now, just show a simple notification
+        showNotification(`${product.name} added to cart!`);
+    }
+}
+
+// Add to wishlist function
+function addToWishlist(productId) {
+    const product = products.find(p => p.id === productId);
+    if (product) {
+        console.log('Added to wishlist:', product.name);
+        // You can implement wishlist functionality here
+        // For now, just show a simple notification
+        showNotification(`${product.name} added to wishlist!`);
+    }
+}
+
+// Show notification function
+function showNotification(message) {
+    const notification = document.createElement('div');
+    notification.className = 'notification';
+    notification.textContent = message;
+    notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: var(--accent-color);
+        color: white;
+        padding: 15px 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        z-index: 10000;
+        animation: slideIn 0.3s ease;
+    `;
+    
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+        notification.style.animation = 'slideOut 0.3s ease';
+        setTimeout(() => {
+            document.body.removeChild(notification);
+        }, 300);
+    }, 3000);
 }
 
 // Simple product display
@@ -114,6 +181,19 @@ function displayProducts(category) {
                 <p class="product-price">${product.price}</p>
                 <button class="btn-add view-details-btn" data-product-id="${product.id}">View Details</button>
             </div>
+            <div class="product-overlay">
+                <div class="product-actions">
+                    <button class="product-action-btn view-details-btn" data-product-id="${product.id}" title="View Details">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                    <button class="product-action-btn add-to-cart-btn" data-product-id="${product.id}" title="Add to Cart">
+                        <i class="fas fa-shopping-cart"></i>
+                    </button>
+                    <button class="product-action-btn wishlist-btn" data-product-id="${product.id}" title="Add to Wishlist">
+                        <i class="fas fa-heart"></i>
+                    </button>
+                </div>
+            </div>
         `;
         
         productsGrid.appendChild(productCard);
@@ -147,7 +227,7 @@ function showProductDetails(productId) {
                 <p class="modal-product-description">${product.description || 'No description available for this product.'}</p>
                 <div class="modal-product-actions">
                     <button class="btn-add">Add to Cart</button>
-                    <button class="btn-contact">Contact Us</button>
+                    <button class="btn-close-modal">Close</button>
                 </div>
             </div>
         </div>
@@ -157,7 +237,13 @@ function showProductDetails(productId) {
 
     // Add close functionality
     const closeBtn = modalOverlay.querySelector('.close-modal');
+    const closeBtnBottom = modalOverlay.querySelector('.btn-close-modal');
+    
     closeBtn.addEventListener('click', () => {
+        document.body.removeChild(modalOverlay);
+    });
+
+    closeBtnBottom.addEventListener('click', () => {
         document.body.removeChild(modalOverlay);
     });
 
