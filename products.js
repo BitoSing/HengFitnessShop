@@ -1,9 +1,14 @@
 // Dynamic product loader for Images folder (images 4-116)
 
 // Function to categorize products based on name
-function categorizeProduct(productName) {
+function categorizeProduct(productName, badge = '') {
     const name = productName.toLowerCase();
     
+    // Check for special categories based on badge
+    if (badge === 'Hot') return 'Hot Sells';
+    if (badge === 'New') return 'New Products';
+    
+    // Regular categories based on product name
     if (name.includes('yoga')) return 'Yoga';
     if (name.includes('boxing') || name.includes('gloves') || name.includes('punching') || name.includes('bag')) return 'Boxing';
     if (name.includes('treadmill')) return 'Treadmills';
@@ -15,7 +20,7 @@ function categorizeProduct(productName) {
     if (name.includes('mat') || name.includes('block') || name.includes('strap')) return 'Yoga';
     if (name.includes('rope') || name.includes('jump')) return 'Boxing';
     
-    return 'All Products';
+    return 'all';
 }
 
 // Function to determine badge based on ID
@@ -331,13 +336,14 @@ function generateAllProducts() {
             }
         }
         
+        const badge = determineBadge(i);
         const product = {
             id: String(i).padStart(3, '0'),
             name: productName,
             khmerName: translateToKhmer(productName),
             price: generatePrice(productName, i),
-            category: categorizeProduct(productName),
-            badge: determineBadge(i),
+            category: categorizeProduct(productName, badge),
+            badge: badge,
             image: imageFile,
             description: generateDescription(productName)
         };
